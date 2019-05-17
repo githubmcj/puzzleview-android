@@ -126,14 +126,14 @@ public class TemplateDialog {
                 templateList.add(R.drawable.icon_num_3_1);
                 templateList.add(R.drawable.icon_num_3_2);
                 break;
-            case 4:
-                templateList.add(R.drawable.icon_num_4_1);
-                templateList.add(R.drawable.icon_num_4_2);
-                break;
-            case 5:
-                templateList.add(R.drawable.icon_num_5_1);
-                templateList.add(R.drawable.icon_num_5_2);
-                break;
+//            case 4:
+//                templateList.add(R.drawable.icon_num_4_1);
+//                templateList.add(R.drawable.icon_num_4_2);
+//                break;
+//            case 5:
+//                templateList.add(R.drawable.icon_num_5_1);
+//                templateList.add(R.drawable.icon_num_5_2);
+//                break;
             default:
                 break;
         }

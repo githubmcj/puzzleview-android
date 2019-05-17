@@ -13,6 +13,7 @@ import com.dd.test.puzzleview_android.R;
 import com.dd.test.puzzleview_android.activity.dialog.TemplateDialog;
 import com.dd.test.puzzleview_android.activity.entity.ImageBean;
 import com.dd.test.puzzleview_android.activity.entity.Puzzle;
+import com.dd.test.puzzleview_android.activity.entity.pointtest.Jigsaw;
 import com.dd.test.puzzleview_android.activity.util.FileUtil;
 import com.dd.test.puzzleview_android.activity.view.PuzzleView;
 import com.dd.test.puzzleview_android.activity.view.TopView;
@@ -35,9 +36,15 @@ public class PuzzleActivity extends Activity implements View.OnClickListener {
     private TextView templateTv;
     private List<ImageBean> imageBeans;
     private Puzzle puzzleEntity;
+
+    /**
+     * 拼图模板
+     */
+    private Jigsaw jigsaw;
     private TemplateDialog templateDialog;
     private String pathFileName;
     private int lastSelect = 0;
+    private boolean canEditFrame = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,7 @@ public class PuzzleActivity extends Activity implements View.OnClickListener {
         initView();
         initData();
         initEvent();
+
     }
 
     private void initView() {
@@ -61,6 +69,8 @@ public class PuzzleActivity extends Activity implements View.OnClickListener {
         puzzleLL = (LinearLayout) findViewById(R.id.puzzle_ll);
         puzzleView = (PuzzleView) findViewById(R.id.puzzle_view);
         templateTv = (TextView) findViewById(R.id.template_tv);
+
+
     }
 
     private void initData() {
@@ -72,7 +82,7 @@ public class PuzzleActivity extends Activity implements View.OnClickListener {
         topView.setRightWord("保存");
         puzzleView.setPics(imageBeans);
         if (pathFileName != null) {
-            initCoordinateData(pathFileName, 0);
+            initPointData(pathFileName, 0);
         }
     }
 
@@ -97,13 +107,24 @@ public class PuzzleActivity extends Activity implements View.OnClickListener {
             @Override
             public void OnItemListener(int position) {
                 if (position != lastSelect) {
-                    initCoordinateData(pathFileName, position);
+                    initPointData(pathFileName, position);
                     puzzleView.invalidate();
                     lastSelect = position;
                 }
                 templateDialog.dismiss();
             }
         });
+
+
+        topView.setRightWord("编辑");
+        topView.setOnRightClickListener(new TopView.OnRightClickListener() {
+            @Override
+            public void rightClick() {
+                canEditFrame = !canEditFrame;
+                puzzleView.setCanEdit(canEditFrame);
+            }
+        });
+
     }
 
     private void getFileName(int picNum) {
@@ -111,34 +132,40 @@ public class PuzzleActivity extends Activity implements View.OnClickListener {
         switch (picNum) {
 
             case 2:
-                pathFileName = "num_two_style";
+                pathFileName = "num_two_jigsaw_style";
                 break;
             case 3:
-                pathFileName = "num_three_style";
+                pathFileName = "num_three_jigsaw_style";
                 break;
-            case 4:
-                pathFileName = "num_four_style";
-                break;
-            case 5:
-                pathFileName = "num_five_style";
-                break;
+//            case 4:
+//                pathFileName = "num_four_style";
+//                break;
+//            case 5:
+//                pathFileName = "num_five_style";
+//                break;
             default:
                 break;
         }
     }
 
-    private void initCoordinateData(String fileName, int templateNum) {
+    /**
+     * 获取模板数据，设置点的位置
+     * @param fileName
+     * @param templateNum
+     */
+    private void initPointData(String fileName, int templateNum) {
 
         String data = new FileUtil(context).readAsset(fileName);
         try {
             Gson gson = new Gson();
-            puzzleEntity = gson.fromJson(data, Puzzle.class);
+            jigsaw = gson.fromJson(data, Jigsaw.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (puzzleEntity != null && puzzleEntity.getStyle() != null && puzzleEntity.getStyle().get(templateNum).getPic() != null) {
-            puzzleView.setPathCoordinate(puzzleEntity.getStyle().get(templateNum).getPic());
+        if (jigsaw != null && jigsaw.getStyle() != null && jigsaw.getStyle().get(templateNum).getAllPoints() != null  && jigsaw.getStyle().get(templateNum).getAllPoints().size() > 0 && jigsaw.getStyle().get(templateNum).getImages() != null  && jigsaw.getStyle().get(templateNum).getImages().size() > 0) {
+           // 选择的模板，包含坐标点位置
+            puzzleView.setPoint(jigsaw.getStyle().get(templateNum));
         }
 
     }
@@ -172,9 +199,7 @@ public class PuzzleActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
-
             case R.id.template_tv:
                 templateDialog.show();
                 break;

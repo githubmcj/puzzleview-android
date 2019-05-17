@@ -1,0 +1,81 @@
+{
+	"style": [{
+		"allPoints": [{
+				"move": false,
+				"x": 0,
+				"y": 0
+			},
+			{
+				"move": false,
+				"x": 320,
+				"y": 0
+			},
+			{
+				"move": false,
+				"x": 320,
+				"y": 225
+			},
+			{
+				"move": false,
+				"x": 0,
+				"y": 225
+			},
+			{
+				"move": false,
+				"x": 0,
+				"y": 450
+			},
+			{
+				"move": false,
+				"x": 320,
+				"y": 450
+			}
+		],
+		"images": [{
+				"pointIndex": [0, 1, 2, 3]
+			},
+			{
+				"pointIndex": [3, 2, 5, 4]
+			}
+		]
+	}, {
+		"allPoints": [{
+				"move": false,
+				"x": 0,
+				"y": 0
+			},
+			{
+				"move": false,
+				"x": 320,
+				"y": 0
+			},
+			{
+				"move": false,
+				"x": 320,
+				"y": 180
+			},
+			{
+				"move": false,
+				"x": 0,
+				"y": 180
+			},
+			{
+				"move": false,
+				"x": 0,
+				"y": 450
+			},
+			{
+				"move": false,
+				"x": 320,
+				"y": 450
+			}
+		],
+		"images": [{
+				"pointIndex": [0, 1, 2, 3]
+			},
+			{
+				"pointIndex": [3, 2, 5, 4]
+			}
+		]
+	}]
+}
